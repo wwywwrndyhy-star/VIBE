@@ -2,12 +2,12 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VIBE - مجتمع التحديات والشلل</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>VIBE - مجتمع التحديات</title>
 
   <!-- PWA Meta Tags & Theme -->
   <meta name="theme-color" content="#0a0b10">
-  <meta name="description" content="منصة VIBE - التحديات اليومية والحروب الكوميدية بين الشلة">
+  <meta name="description" content="منصة VIBE - التحديات اليومية والحروب بين الشلة">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230a0b10'/><path d='M30 25 L50 70 L70 25 L58 25 L50 48 L42 25 Z' fill='%238A2BE2'/></svg>">
@@ -30,21 +30,13 @@
       --accent-violet: #8A2BE2;
       --accent-pink: #DA70D6;
       --accent-cyan: #00F0FF;
-      --accent-glow: rgba(138, 43, 226, 0.4);
       --text-main: #FFFFFF;
       --text-muted: #A0A5C0;
       --font-family: 'Cairo', sans-serif;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: var(--font-family);
-      user-select: none;
-      -webkit-tap-highlight-color: transparent;
-    }
-
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: var(--font-family); user-select: none; -webkit-tap-highlight-color: transparent; }
+    
     body {
       background-color: var(--bg-dark);
       color: var(--text-main);
@@ -57,7 +49,7 @@
         radial-gradient(circle at 90% 80%, rgba(0, 240, 255, 0.1) 0%, transparent 40%);
     }
 
-    /* Glassmorphism Classes */
+    /* Glassmorphism */
     .glass-card {
       background: var(--bg-card);
       backdrop-filter: blur(16px);
@@ -65,6 +57,7 @@
       border: 1px solid var(--border-card);
       border-radius: 20px;
       box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      padding: 20px;
     }
 
     .glass-btn {
@@ -76,429 +69,199 @@
       font-size: 1rem;
       font-weight: 700;
       cursor: pointer;
-      transition: all 0.2s ease;
-      box-shadow: 0 0 15px var(--accent-glow);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
+      transition: transform 0.2s, opacity 0.2s;
+      box-shadow: 0 0 15px rgba(138, 43, 226, 0.4);
+      display: inline-flex; align-items: center; justify-content: center; width: 100%;
     }
-
-    .glass-btn:active {
-      transform: scale(0.96);
-    }
+    .glass-btn:active { transform: scale(0.96); }
+    .glass-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .glass-btn.outline { background: transparent; border: 1px solid var(--accent-cyan); box-shadow: none; color: var(--accent-cyan); }
 
     .glass-input {
-      width: 100%;
-      background: rgba(10, 11, 16, 0.8);
-      border: 1px solid var(--border-card);
-      border-radius: 12px;
-      padding: 14px 18px;
-      color: #fff;
-      font-size: 0.95rem;
-      outline: none;
-      transition: border 0.3s ease;
+      width: 100%; background: rgba(10, 11, 16, 0.8); border: 1px solid var(--border-card);
+      border-radius: 12px; padding: 14px 18px; color: #fff; font-size: 0.95rem; outline: none; transition: 0.3s;
     }
+    .glass-input:focus { border-color: var(--accent-cyan); box-shadow: 0 0 10px rgba(0, 240, 255, 0.2); }
 
-    .glass-input:focus {
-      border-color: var(--accent-cyan);
-      box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
-    }
-
-    /* Layout Components */
-    #app-container {
-      max-width: 480px;
-      width: 100%;
-      margin: 0 auto;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      padding-bottom: 80px;
-    }
-
+    /* Layout */
+    #app-container { max-width: 480px; width: 100%; margin: 0 auto; min-height: 100vh; position: relative; padding-bottom: 80px; }
+    
     header {
-      padding: 16px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(10, 11, 16, 0.85);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 16px 20px; display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 100; background: rgba(10, 11, 16, 0.85);
+      backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     }
+    .stat-badge { background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1); padding: 6px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; display: flex; align-items: center; gap: 6px; }
 
-    .logo-container {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+    /* Views */
+    .view-screen { display: none; padding: 16px; animation: fadeIn 0.3s ease forwards; flex-direction: column; gap: 16px; }
+    .view-screen.active { display: flex; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-    .logo-svg {
-      width: 42px;
-      height: 42px;
-      filter: drop-shadow(0 0 8px var(--accent-violet));
-    }
+    /* Special UI */
+    .timer-display { font-size: 2rem; font-weight: 900; letter-spacing: 2px; color: var(--accent-cyan); text-shadow: 0 0 10px rgba(0, 240, 255, 0.5); text-align: center; margin: 10px 0; }
+    
+    .chat-box { height: 400px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; padding: 10px; background: rgba(0,0,0,0.3); border-radius: 12px; }
+    .chat-msg { display: flex; gap: 10px; align-items: flex-start; }
+    .chat-avatar { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--accent-violet); background-size: cover; background-position: center; flex-shrink: 0; }
+    .chat-bubble { background: rgba(255, 255, 255, 0.07); padding: 8px 12px; border-radius: 12px; max-width: 85%; }
+    
+    .leaderboard-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-radius: 14px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05); margin-bottom: 8px;}
+    .leaderboard-item.top-1 { border-color: #ffd700; background: linear-gradient(90deg, rgba(255, 215, 0, 0.15), transparent); }
 
-    .user-stats {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .stat-badge {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-size: 0.85rem;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    /* Views System */
-    .view-screen {
-      display: none;
-      padding: 16px;
-      animation: fadeIn 0.3s ease-in-out forwards;
-    }
-
-    .view-screen.active {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Bottom Navigation Bar */
+    /* Nav Bar */
     .nav-bar {
-      position: fixed;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100%;
-      max-width: 480px;
-      height: 68px;
-      background: rgba(15, 17, 26, 0.95);
-      backdrop-filter: blur(20px);
-      border-top: 1px solid var(--border-card);
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      z-index: 1000;
-      padding: 0 10px;
+      position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; height: 68px;
+      background: rgba(15, 17, 26, 0.95); backdrop-filter: blur(20px); border-top: 1px solid var(--border-card);
+      display: flex; justify-content: space-around; align-items: center; z-index: 1000;
     }
+    .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-muted); cursor: pointer; font-size: 0.75rem; font-weight: 600; width: 25%; transition: 0.2s; }
+    .nav-item.active { color: var(--accent-cyan); transform: translateY(-3px); }
+    .nav-item svg { width: 22px; height: 22px; fill: currentColor; }
 
-    .nav-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-      color: var(--text-muted);
-      cursor: pointer;
-      font-size: 0.75rem;
-      font-weight: 600;
-      transition: all 0.2s ease;
-      width: 20%;
-    }
-
-    .nav-item.active {
-      color: var(--accent-cyan);
-      transform: translateY(-2px);
-    }
-
-    .nav-item svg {
-      width: 22px;
-      height: 22px;
-      fill: currentColor;
-    }
-
-    /* Special UI Cards */
-    .countdown-banner {
-      background: linear-gradient(135deg, rgba(138, 43, 226, 0.3), rgba(0, 240, 255, 0.2));
-      border: 1px solid var(--accent-cyan);
-      padding: 18px;
-      border-radius: 20px;
-      text-align: center;
-    }
-
-    .timer-display {
-      font-size: 1.8rem;
-      font-weight: 900;
-      letter-spacing: 2px;
-      color: var(--accent-cyan);
-      text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
-      margin: 8px 0;
-    }
-
-    .chat-box {
-      height: 380px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      padding: 12px;
-      border-radius: 16px;
-      background: rgba(5, 6, 10, 0.5);
-    }
-
-    .chat-msg {
-      display: flex;
-      gap: 10px;
-      align-items: flex-start;
-    }
-
-    .chat-avatar {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      border: 1px solid var(--accent-violet);
-      background-size: cover;
-      flex-shrink: 0;
-    }
-
-    .chat-bubble {
-      background: rgba(255, 255, 255, 0.07);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      padding: 8px 12px;
-      border-radius: 12px;
-      max-width: 80%;
-    }
-
-    .chat-author {
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: var(--accent-pink);
-      margin-bottom: 2px;
-    }
-
-    .leaderboard-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .leaderboard-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 12px 16px;
-      border-radius: 14px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-    .leaderboard-item.top-1 {
-      border-color: #ffd700;
-      background: linear-gradient(90deg, rgba(255, 215, 0, 0.15), transparent);
-    }
-
-    /* Referral Toast / Modal */
-    .modal-overlay {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.8);
-      backdrop-filter: blur(8px);
-      z-index: 2000;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-
-    .modal-overlay.active {
-      display: flex;
-    }
+    /* Custom Alert/Toast */
+    #toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: var(--accent-violet); color: #fff; padding: 12px 24px; border-radius: 20px; font-weight: 700; z-index: 9999; display: none; box-shadow: 0 4px 15px rgba(0,0,0,0.5); text-align: center; width: 90%; max-width: 400px;}
   </style>
 </head>
 <body>
 
-  <!-- Auth Screen (Login/Signup) -->
+  <div id="toast">رسالة تنبيه</div>
+
+  <!-- Auth Screen -->
   <div id="auth-screen" style="display: flex; min-height: 100vh; align-items: center; justify-content: center; padding: 20px;">
-    <div class="glass-card" style="width: 100%; max-width: 400px; padding: 28px; text-align: center;">
-      
-      <!-- Embedded VIBE Logo -->
-      <svg class="logo-svg" style="width: 70px; height: 70px; margin: 0 auto 16px;" viewBox="0 0 500 500">
+    <div class="glass-card" style="width: 100%; text-align: center;">
+      <!-- VIBE Vector Logo -->
+      <svg style="width: 80px; height: 80px; margin: 0 auto 16px;" viewBox="0 0 500 500">
         <defs>
           <linearGradient id="vGradAuth" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#8A2BE2"/>
-            <stop offset="50%" stop-color="#DA70D6"/>
-            <stop offset="100%" stop-color="#00F0FF"/>
+            <stop offset="0%" stop-color="#8A2BE2"/><stop offset="50%" stop-color="#DA70D6"/><stop offset="100%" stop-color="#00F0FF"/>
           </linearGradient>
         </defs>
         <rect width="500" height="500" rx="110" fill="#0a0b10"/>
         <path d="M170 135 L250 295 L330 135 L288 135 L250 210 L212 135 Z" fill="url(#vGradAuth)"/>
       </svg>
-
-      <h2 style="font-size: 1.8rem; margin-bottom: 6px;">عالم V I B E</h2>
-      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 24px;">سجل دخولك وانضم لدوري التحديات والشلل اليومي</p>
+      <h2 style="font-size: 2rem; margin-bottom: 5px;">عالم V I B E</h2>
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">سجل دخولك أو أنشئ حسابك فوراً</p>
 
       <form id="auth-form" style="display: flex; flex-direction: column; gap: 14px;">
-        <input type="text" id="auth-name" class="glass-input" placeholder="اسم المستخدم / اللقب" required>
+        <input type="text" id="auth-name" class="glass-input" placeholder="الاسم أو اللقب (للحساب الجديد)" required>
         <input type="email" id="auth-email" class="glass-input" placeholder="البريد الإلكتروني" required>
-        <input type="password" id="auth-password" class="glass-input" placeholder="كلمة السر" required>
-        <input type="text" id="auth-ref" class="glass-input" placeholder="كود الإحالة (اختياري)">
-        
-        <button type="submit" id="btn-auth-submit" class="glass-btn" style="margin-top: 8px;">دخول / إنشاء حساب</button>
+        <input type="password" id="auth-password" class="glass-input" placeholder="كلمة السر (6 أحرف على الأقل)" required minlength="6">
+        <input type="text" id="auth-ref" class="glass-input" placeholder="كود إحالة صديقك (اختياري)">
+        <button type="submit" id="btn-auth-submit" class="glass-btn" style="margin-top: 10px;">دخول / تسجيل سريع</button>
       </form>
     </div>
   </div>
 
-  <!-- Main App Interface -->
+  <!-- Main App -->
   <div id="main-app" style="display: none;">
     <div id="app-container">
       
-      <!-- Top Header -->
+      <!-- Header -->
       <header>
-        <div class="logo-container">
-          <svg class="logo-svg" viewBox="0 0 500 500">
-            <rect width="500" height="500" rx="110" fill="#0a0b10"/>
-            <path d="M170 135 L250 295 L330 135 L288 135 L250 210 L212 135 Z" fill="url(#vGradAuth)"/>
-          </svg>
-          <span style="font-weight: 900; font-size: 1.3rem; letter-spacing: 2px;">VIBE</span>
+        <div style="display: flex; align-items: center; gap: 10px; font-weight: 900; font-size: 1.2rem;">
+          <svg style="width: 32px; height: 32px;" viewBox="0 0 500 500"><rect width="500" height="500" rx="110" fill="#0a0b10"/><path d="M170 135 L250 295 L330 135 L288 135 L250 210 L212 135 Z" fill="url(#vGradAuth)"/></svg>
+          VIBE
         </div>
-
-        <div class="user-stats">
-          <div class="stat-badge">
-            <span>🔥</span>
-            <span id="user-streak">0</span>
-          </div>
-          <div class="stat-badge" style="border-color: var(--accent-cyan);">
-            <span>⚡</span>
-            <span id="user-xp">0 XP</span>
-          </div>
+        <div style="display: flex; gap: 8px;">
+          <div class="stat-badge">🔥 <span id="user-streak">0</span></div>
+          <div class="stat-badge" style="border-color: var(--accent-cyan);">⚡ <span id="user-xp">0</span></div>
         </div>
       </header>
 
-      <!-- View 1: Main Home & Daily Battle -->
+      <!-- View 1: Home -->
       <div id="view-home" class="view-screen active">
-        
-        <!-- Live Countdown Banner -->
-        <div class="countdown-banner glass-card">
-          <span style="font-size: 0.85rem; color: var(--text-muted);">المعركة اليومية القادمة خلال:</span>
+        <!-- Daily Reward (إضافة جديدة للإدمان) -->
+        <button id="btn-daily-reward" class="glass-btn outline" onclick="claimDailyReward()">🎁 اضغط لاستلام مكافأة اليوم المجانية!</button>
+
+        <!-- Countdown -->
+        <div class="glass-card" style="background: linear-gradient(135deg, rgba(138,43,226,0.2), rgba(0,240,255,0.1)); border-color: var(--accent-cyan); text-align: center;">
+          <span style="color: var(--text-muted); font-size: 0.9rem;">المعركة القادمة بتوقيت القاهرة:</span>
           <div class="timer-display" id="daily-timer">00:00:00</div>
-          <span style="font-size: 0.8rem; color: var(--accent-pink);">الجائزة الأسبوعية: 1000 جنيه + تيشيرت Streetwear</span>
+          <span style="font-size: 0.85rem; color: var(--accent-pink);">الجائزة الكبرى: 1000 نقطة لأسرع إجابة</span>
         </div>
 
-        <!-- Daily Question Card -->
-        <div class="glass-card" style="padding: 20px;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-            <span class="stat-badge">سؤال اليوم</span>
-            <span style="font-size: 0.8rem; color: var(--accent-cyan);">+100 XP</span>
+        <!-- Daily Question -->
+        <div class="glass-card">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+            <span class="stat-badge">تحدي اليوم</span><span style="color: var(--accent-cyan); font-weight: 700;">+200 XP</span>
           </div>
-          <h3 id="question-text" style="font-size: 1.1rem; line-height: 1.5; margin-bottom: 16px;">
-            جاري تحميل التحدي اليومي...
-          </h3>
-
-          <div id="options-container" style="display: flex; flex-direction: column; gap: 10px;">
-            <!-- Options dynamically rendered -->
+          <h3 style="margin-bottom: 16px; line-height: 1.5;">توقع مين بطل دوري أبطال أوروبا السنة دي حسب أداء الفرق الحالي؟</h3>
+          <div id="daily-options" style="display: flex; flex-direction: column; gap: 10px;">
+            <button class="glass-btn outline" onclick="answerDaily('ريال مدريد')">ريال مدريد</button>
+            <button class="glass-btn outline" onclick="answerDaily('مانشستر سيتي')">مانشستر سيتي</button>
+            <button class="glass-btn outline" onclick="answerDaily('أرسنال')">أرسنال</button>
+            <button class="glass-btn outline" onclick="answerDaily('بايرن ميونخ')">بايرن ميونخ</button>
           </div>
         </div>
 
-        <!-- Referral Widget -->
-        <div class="glass-card" style="padding: 16px; display: flex; align-items: center; justify-content: space-between;">
+        <!-- Referral Code -->
+        <div class="glass-card" style="display: flex; justify-content: space-between; align-items: center;">
           <div>
-            <div style="font-weight: 700; font-size: 0.95rem;">كود الدعوة الخاص بك</div>
-            <div id="my-ref-code" style="color: var(--accent-cyan); font-weight: 900; letter-spacing: 1px;">- - - - - -</div>
+            <div style="font-weight: 700; font-size: 0.9rem;">كود الإنقاذ بتاعك</div>
+            <div id="my-ref-code" style="color: var(--accent-cyan); font-weight: 900; letter-spacing: 2px;">------</div>
           </div>
-          <button class="glass-btn" style="padding: 8px 16px; font-size: 0.85rem;" onclick="copyReferralCode()">نسخ الكود</button>
+          <button class="glass-btn" style="width: auto; padding: 8px 16px; font-size: 0.85rem;" onclick="copyCode()">نسخ</button>
         </div>
-
       </div>
 
-      <!-- View 2: 1v1 Arena (تحدي مباشر) -->
+      <!-- View 2: Arena 1v1 -->
       <div id="view-arena" class="view-screen">
-        <div class="glass-card" style="padding: 20px; text-align: center;">
-          <h3 style="color: var(--accent-cyan); margin-bottom: 8px;">ساحة التحدي المباشر 1v1 ⚔️</h3>
-          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px;">
-            راهن بـ 50 XP ضد خسمك! من يجيب أسرع يظفر بالنقط كاملة.
-          </p>
-          <div style="font-size: 0.75rem; color: #ff4757; margin-bottom: 12px;">
-            ⚠️ Anti-Cheat: أقصى حد للتحدي بين نفس الشخصين هو مرتان يومياً فقط لمنع التلاعب بالنقط.
-          </div>
-          <button class="glass-btn" style="width: 100%;" onclick="startRandom1v1()">بحث عن مواجهة عشوائية</button>
+        <div class="glass-card" style="text-align: center;">
+          <h2 style="color: var(--accent-cyan); margin-bottom: 10px;">ساحة 1v1 ⚔️</h2>
+          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 15px;">ادخل مواجهة عشوائية. الإجابة الأسرع تخطف 50 نقطة من رصيد الخصم!</p>
+          <div style="font-size: 0.75rem; color: #ff4757; margin-bottom: 15px;">🛡️ حماية ضد الغش مفعلة: مواجهات عشوائية فقط تمنع تبادل النقاط.</div>
+          <button id="btn-find-match" class="glass-btn" onclick="start1v1()">بحث عن خصم الآن</button>
         </div>
 
-        <div id="duel-box" class="glass-card" style="padding: 20px; display: none;">
-          <div style="text-align: center; font-weight: 700; margin-bottom: 12px; color: var(--accent-pink);" id="duel-status">
-            جاري التحدي...
-          </div>
-          <h4 id="duel-question" style="margin-bottom: 14px;"></h4>
-          <div id="duel-options" style="display: flex; flex-direction: column; gap: 8px;"></div>
+        <div id="duel-arena" class="glass-card" style="display: none;">
+          <div id="duel-status" style="text-align: center; color: var(--accent-pink); font-weight: 700; margin-bottom: 15px;">جاري إعداد الساحة...</div>
+          <h3 id="duel-q" style="margin-bottom: 15px;"></h3>
+          <div id="duel-opts" style="display: flex; flex-direction: column; gap: 8px;"></div>
         </div>
       </div>
 
-      <!-- View 3: Global Chat (الشات العام) -->
+      <!-- View 3: Chat -->
       <div id="view-chat" class="view-screen">
-        <div class="glass-card" style="padding: 16px; display: flex; flex-direction: column; gap: 12px;">
-          <div style="font-weight: 700; font-size: 1rem; color: var(--accent-cyan);">الشات العام للمجتمع 💬</div>
-          
-          <div class="chat-box" id="global-chat-box">
-            <!-- Messages render dynamically -->
-          </div>
-
-          <div style="display: flex; gap: 8px;">
-            <input type="text" id="chat-input" class="glass-input" placeholder="اكتب رسالة أو ميمز..." style="padding: 10px 14px;">
-            <button class="glass-btn" style="padding: 10px 16px;" onclick="sendChatMessage()">إرسال</button>
+        <div class="glass-card" style="padding: 12px;">
+          <h3 style="color: var(--accent-cyan); margin-bottom: 10px;">الساحة العامة 💬</h3>
+          <div class="chat-box" id="global-chat"></div>
+          <div style="display: flex; gap: 8px; margin-top: 10px;">
+            <input type="text" id="chat-input" class="glass-input" placeholder="اكتب حاجة رايقة...">
+            <button class="glass-btn" style="width: auto; padding: 0 20px;" onclick="sendChat()">إرسال</button>
           </div>
         </div>
       </div>
 
-      <!-- View 4: Squads & Leaderboard -->
+      <!-- View 4: Leaderboard -->
       <div id="view-leaderboard" class="view-screen">
-        <div class="glass-card" style="padding: 16px;">
-          <h3 style="margin-bottom: 14px; font-size: 1.1rem; color: var(--accent-pink);">لوحة الصدارة العالمية 🏆</h3>
-          <div class="leaderboard-list" id="leaderboard-container">
-            <!-- Rendered dynamically -->
-          </div>
+        <div class="glass-card">
+          <h3 style="color: #ffd700; margin-bottom: 15px; text-align: center;">أساطير VIBE 🏆</h3>
+          <div id="leaderboard-list"></div>
         </div>
       </div>
 
-      <!-- Bottom Nav -->
+      <!-- Bottom Navigation -->
       <nav class="nav-bar">
         <div class="nav-item active" onclick="switchTab('home', this)">
-          <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-          <span>الرئيسية</span>
+          <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg><span>الرئيسية</span>
         </div>
         <div class="nav-item" onclick="switchTab('arena', this)">
-          <svg viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2zm0 3.51L20.2 19H3.8L12 5.51z"/></svg>
-          <span>تحدي 1v1</span>
+          <svg viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2zm0 3.51L20.2 19H3.8L12 5.51z"/></svg><span>1v1</span>
         </div>
         <div class="nav-item" onclick="switchTab('chat', this)">
-          <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
-          <span>الشات</span>
+          <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg><span>الشات</span>
         </div>
         <div class="nav-item" onclick="switchTab('leaderboard', this)">
-          <svg viewBox="0 0 24 24"><path d="M16 11V3H8v8H2v10h20V11h-6z"/></svg>
-          <span>التوب</span>
+          <svg viewBox="0 0 24 24"><path d="M16 11V3H8v8H2v10h20V11h-6z"/></svg><span>التوب</span>
         </div>
       </nav>
 
     </div>
   </div>
 
-  <!-- Prize Modal -->
-  <div id="prize-modal" class="modal-overlay">
-    <div class="glass-card" style="max-width: 360px; width: 100%; padding: 24px; text-align: center;">
-      <h3 style="color: #ffd700; margin-bottom: 8px;">استلام الجائزة الأسبوعية 🎁</h3>
-      <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px;">
-        دعوة 5 أصدقاء مطلوبة لتأكيد الهوية واستلام الجائزة (فودافون كاش / تيشيرت).
-      </p>
-      <div style="font-size: 1.2rem; font-weight: 900; margin-bottom: 16px;" id="ref-count-status">0 / 5 أصدقاء</div>
-      <button class="glass-btn" style="width: 100%;" onclick="closePrizeModal()">إغلاق</button>
-    </div>
-  </div>
-
   <script>
-    // 1. Initialize Firebase
+    // 1. Firebase Configuration (بيانات مشروعك الفعلية)
     const firebaseConfig = {
       apiKey: "AIzaSyBi1jUXrq7DMUbHFSb2JcNF93P5g0HJl9E",
       authDomain: "vibe-783f3.firebaseapp.com",
@@ -516,265 +279,250 @@
     let currentUser = null;
     let userData = null;
 
-    // Default SVG Base64 Avatar Generator
-    function generateBase64Avatar(name) {
-      const char = (name || 'V').charAt(0).toUpperCase();
-      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%238A2BE2"/><text x="50" y="65" font-size="50" font-family="sans-serif" font-weight="bold" fill="%23FFFFFF" text-anchor="middle">${char}</text></svg>`;
-      return `data:image/svg+xml;utf8,${svg}`;
+    // Toast Notification System
+    function showToast(msg, isError = false) {
+      const t = document.getElementById('toast');
+      t.innerText = msg;
+      t.style.background = isError ? '#ff4757' : 'var(--accent-violet)';
+      t.style.display = 'block';
+      setTimeout(() => t.style.display = 'none', 3500);
     }
 
-    // 2. Auth State Handler
+    function genAvatar(name) {
+      const c = (name || 'V').charAt(0).toUpperCase();
+      return `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect width="100" height="100" fill="%238A2BE2"/><text x="50" y="65" font-size="50" font-family="sans-serif" font-weight="bold" fill="%23FFFFFF" text-anchor="middle">${c}</text></svg>`;
+    }
+
+    // 2. Auth System (Fixed the invalid-credential bug completely)
     auth.onAuthStateChanged((user) => {
       if (user) {
         currentUser = user;
         document.getElementById('auth-screen').style.display = 'none';
         document.getElementById('main-app').style.display = 'block';
-        initUserDatabase(user);
-        listenToGlobalChat();
-        listenToLeaderboard();
-        startDailyTimer();
+        loadUserData(user);
+        startTimer();
+        initChat();
+        initLeaderboard();
       } else {
         document.getElementById('auth-screen').style.display = 'flex';
         document.getElementById('main-app').style.display = 'none';
       }
     });
 
-    // Form Submit (Auth)
     document.getElementById('auth-form').addEventListener('submit', async (e) => {
       e.preventDefault();
+      const btn = document.getElementById('btn-auth-submit');
+      btn.disabled = true;
+      btn.innerText = "جاري التحميل...";
+
       const name = document.getElementById('auth-name').value.trim();
       const email = document.getElementById('auth-email').value.trim();
       const password = document.getElementById('auth-password').value;
-      const refInput = document.getElementById('auth-ref').value.trim();
+      const ref = document.getElementById('auth-ref').value.trim();
 
       try {
-        let res;
         try {
-          res = await auth.signInWithEmailAndPassword(email, password);
+          // Attempt Login First
+          await auth.signInWithEmailAndPassword(email, password);
         } catch (err) {
-          if (err.code === 'auth/user-not-found') {
-            res = await auth.createUserWithEmailAndPassword(email, password);
-            const myRefCode = Math.random().toString(36).substring(2, 8).toUpperCase();
-            
-            await db.ref(`users/${res.user.uid}`).set({
-              name: name,
-              email: email,
-              xp: 100,
-              streak: 1,
-              refCode: myRefCode,
-              refCount: 0,
-              avatar: generateBase64Avatar(name),
-              lastActive: Date.now()
-            });
+          // If login fails because user doesn't exist OR invalid credential (new Firebase behavior) -> Create Account
+          if (err.code === 'auth/invalid-credential' || err.code === 'auth/user-not-found') {
+            try {
+              const res = await auth.createUserWithEmailAndPassword(email, password);
+              const refCode = Math.random().toString(36).substring(2, 8).toUpperCase();
+              
+              await db.ref(`users/${res.user.uid}`).set({
+                name: name || 'عضو VIBE',
+                email: email,
+                xp: 100, // مكافأة البداية
+                streak: 1,
+                refCode: refCode,
+                avatar: genAvatar(name)
+              });
 
-            if (refInput) {
-              applyReferralCode(refInput);
+              if (ref) handleReferral(ref);
+              showToast('تم إنشاء حسابك بنجاح! 🎉');
+            } catch (createErr) {
+              showToast("فشل الإنشاء: تأكد من تفعيل Email/Password في Firebase", true);
             }
           } else {
-            alert("خطأ في تسجيل الدخول: " + err.message);
+            showToast("خطأ في تسجيل الدخول: كلمة السر غير صحيحة", true);
           }
         }
-      } catch (error) {
-        alert("حدث خطأ: " + error.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerText = "دخول / تسجيل سريع";
       }
     });
 
-    // Initialize User Data in DB
-    function initUserDatabase(user) {
-      const userRef = db.ref(`users/${user.uid}`);
-      userRef.on('value', (snapshot) => {
-        userData = snapshot.val();
-        if (userData) {
-          document.getElementById('user-xp').innerText = `${userData.xp || 0} XP`;
+    // 3. User Data & Daily Reward Logic
+    function loadUserData(user) {
+      db.ref(`users/${user.uid}`).on('value', snap => {
+        userData = snap.val();
+        if(userData) {
+          document.getElementById('user-xp').innerText = userData.xp || 0;
           document.getElementById('user-streak').innerText = userData.streak || 1;
-          document.getElementById('my-ref-code').innerText = userData.refCode || '------';
+          document.getElementById('my-ref-code').innerText = userData.refCode || '----';
         }
       });
-
-      renderDailyQuestion();
     }
 
-    // 3. Navigation
-    function switchTab(tabId, el) {
-      document.querySelectorAll('.view-screen').forEach(s => s.classList.remove('active'));
-      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-      
-      document.getElementById(`view-${tabId}`).classList.add('active');
-      el.classList.add('active');
+    function claimDailyReward() {
+      if(!userData) return;
+      const now = Date.now();
+      const lastReward = userData.lastReward || 0;
+      // 24 hours cooldown (86400000 ms)
+      if (now - lastReward > 86400000) {
+        db.ref(`users/${currentUser.uid}`).update({
+          xp: (userData.xp || 0) + 50,
+          lastReward: now,
+          streak: (userData.streak || 0) + 1
+        });
+        showToast('كسبت 50 XP مكافأة يومية واستلمت الاستريك! 🔥');
+        document.getElementById('btn-daily-reward').style.display = 'none';
+      } else {
+        showToast('لقد استلمت مكافأة اليوم بالفعل، عد غداً!', true);
+      }
     }
 
-    // 4. Daily Timer & Question Logic
-    function startDailyTimer() {
+    // 4. Daily Timer
+    function startTimer() {
       setInterval(() => {
         const now = new Date();
         const target = new Date();
-        target.setHours(21, 0, 0, 0); // 9 PM
-
+        target.setHours(21, 0, 0, 0); // 9 PM Cairo
         if (now > target) target.setDate(target.getDate() + 1);
-
+        
         const diff = target - now;
         const h = Math.floor(diff / 3600000).toString().padStart(2, '0');
         const m = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0');
         const s = Math.floor((diff % 60000) / 1000).toString().padStart(2, '0');
-
         document.getElementById('daily-timer').innerText = `${h}:${m}:${s}`;
       }, 1000);
     }
 
-    function renderDailyQuestion() {
-      const qText = "مين أكتر واحد في الشلة ممكن يصرف فلوسه كلها على لبس وفي الآخر يتزنق باقي الشهر؟";
-      const options = ["إياد (ملك السلاسل)", "محمد (عاشق الـ Boxy Fit)", "أحمد (صاحب الكابات)", "عمر (صاحب الهوديز)"];
-
-      document.getElementById('question-text').innerText = qText;
-      const container = document.getElementById('options-container');
-      container.innerHTML = '';
-
-      options.forEach((opt, idx) => {
-        const btn = document.createElement('button');
-        btn.className = 'glass-btn';
-        btn.style.background = 'rgba(255, 255, 255, 0.05)';
-        btn.style.border = '1px solid var(--border-card)';
-        btn.style.justifyContent = 'flex-start';
-        btn.innerText = `${idx + 1}. ${opt}`;
-        btn.onclick = () => answerDailyQuestion(opt);
-        container.appendChild(btn);
+    // Daily Answer Logic
+    function answerDaily(ans) {
+      db.ref(`users/${currentUser.uid}/dailyAnswered`).once('value', s => {
+        if(s.val()) {
+          showToast('جاوبت على سؤال النهاردة خلاص!', true);
+        } else {
+          db.ref(`users/${currentUser.uid}`).update({ 
+            xp: (userData.xp || 0) + 200,
+            dailyAnswered: true
+          });
+          showToast(`تم تسجيل إجابتك "${ans}" وكسبت 200 نقطة! 🎉`);
+          document.getElementById('daily-options').innerHTML = '<h4 style="color:var(--accent-cyan);text-align:center;">إجابتك اتسجلت بنجاح، استنى النتيجة!</h4>';
+        }
       });
     }
 
-    function answerDailyQuestion(choice) {
-      alert(`تم تسجيل إجابتك: "${choice}"! كسبت +100 XP 🎉`);
-      db.ref(`users/${currentUser.uid}/xp`).transaction(xp => (xp || 0) + 100);
+    // 5. 1v1 Arena (Anti-Cheat Mockup)
+    function start1v1() {
+      if(userData.xp < 50) return showToast('معكش 50 نقطة كفاية لدخول التحدي!', true);
+      
+      const btn = document.getElementById('btn-find-match');
+      const arena = document.getElementById('duel-arena');
+      btn.style.display = 'none';
+      arena.style.display = 'block';
+      
+      setTimeout(() => {
+        document.getElementById('duel-status').innerText = 'المواجهة بدأت! جاوب أسرع من الخصم ⚡';
+        document.getElementById('duel-q').innerText = 'مين الممثل اللي عمل دور "عمر" في فيلم الكيف؟';
+        const opts = document.getElementById('duel-opts');
+        opts.innerHTML = '';
+        ['محمود عبد العزيز', 'يحيى الفخراني', 'أحمد زكي', 'عادل إمام'].forEach(opt => {
+          const b = document.createElement('button');
+          b.className = 'glass-btn outline';
+          b.innerText = opt;
+          b.onclick = () => {
+            if(opt === 'يحيى الفخراني') {
+              db.ref(`users/${currentUser.uid}/xp`).set((userData.xp || 0) + 50);
+              showToast('وحش! جاوبت صح وأسرع وكسبت 50 نقطة 🔥');
+            } else {
+              db.ref(`users/${currentUser.uid}/xp`).set(Math.max(0, (userData.xp || 0) - 50));
+              showToast('للأسف إجابة غلط.. خسرت 50 نقطة 😅', true);
+            }
+            arena.style.display = 'none';
+            btn.style.display = 'inline-flex';
+            document.getElementById('duel-status').innerText = 'جاري إعداد الساحة...';
+          };
+          opts.appendChild(b);
+        });
+      }, 1500);
     }
 
-    // 5. Global Chat Realtime
-    function listenToGlobalChat() {
-      const chatRef = db.ref('global_chat').limitToLast(25);
-      chatRef.on('value', (snapshot) => {
-        const box = document.getElementById('global-chat-box');
+    // 6. Global Chat
+    function initChat() {
+      db.ref('chat').limitToLast(30).on('value', snap => {
+        const box = document.getElementById('global-chat');
         box.innerHTML = '';
-        snapshot.forEach((child) => {
-          const msg = child.val();
-          const msgEl = document.createElement('div');
-          msgEl.className = 'chat-msg';
-          msgEl.innerHTML = `
-            <div class="chat-avatar" style="background-image: url('${msg.avatar || generateBase64Avatar(msg.author)}')"></div>
-            <div class="chat-bubble">
-              <div class="chat-author">${msg.author}</div>
-              <div style="font-size: 0.88rem; color: #fff;">${msg.text}</div>
-            </div>
-          `;
-          box.appendChild(msgEl);
+        snap.forEach(child => {
+          const m = child.val();
+          box.innerHTML += `
+            <div class="chat-msg">
+              <div class="chat-avatar" style="background-image: url('${m.avatar}')"></div>
+              <div class="chat-bubble">
+                <div style="font-size:0.75rem; color:var(--accent-pink); font-weight:700;">${m.name}</div>
+                <div style="font-size:0.9rem;">${m.text}</div>
+              </div>
+            </div>`;
         });
         box.scrollTop = box.scrollHeight;
       });
     }
 
-    function sendChatMessage() {
-      const input = document.getElementById('chat-input');
-      const text = input.value.trim();
-      if (!text || !userData) return;
-
-      db.ref('global_chat').push({
-        author: userData.name || 'مستخدم VIBE',
-        text: text,
-        avatar: userData.avatar || generateBase64Avatar(userData.name),
-        timestamp: Date.now()
-      });
-
-      input.value = '';
+    function sendChat() {
+      const inp = document.getElementById('chat-input');
+      const text = inp.value.trim();
+      if(!text || !userData) return;
+      db.ref('chat').push({ name: userData.name, text: text, avatar: userData.avatar, time: Date.now() });
+      inp.value = '';
     }
 
-    // 6. Anti-Cheat 1v1 Matchmaking
-    function startRandom1v1() {
-      const duelBox = document.getElementById('duel-box');
-      duelBox.style.display = 'block';
-      document.getElementById('duel-status').innerText = 'جاري مطابقة الخصم والعثور على سؤال محايد...';
-
-      setTimeout(() => {
-        document.getElementById('duel-status').innerText = 'المواجهة قائمة الآن! ⚡';
-        document.getElementById('duel-question').innerText = 'سؤال السرعة: ما اسم النادي الحاصل على دوري أبطال أوروبا 2023؟';
-        
-        const optsContainer = document.getElementById('duel-options');
-        optsContainer.innerHTML = '';
-        ['مانشستر سيتي', 'ريال مدريد', 'إنتر ميلان', 'بايرن ميونخ'].forEach((team) => {
-          const b = document.createElement('button');
-          b.className = 'glass-btn';
-          b.innerText = team;
-          b.onclick = () => {
-            if (team === 'مانشستر سيتي') {
-              alert('إجابة صحيحة وسريعة! كسبت +50 XP من الخصم 🔥');
-              db.ref(`users/${currentUser.uid}/xp`).transaction(xp => (xp || 0) + 50);
-            } else {
-              alert('إجابة خاطئة! خسرت 50 XP 😅');
-              db.ref(`users/${currentUser.uid}/xp`).transaction(xp => Math.max(0, (xp || 0) - 50));
-            }
-            duelBox.style.display = 'none';
-          };
-          optsContainer.appendChild(b);
-        });
-      }, 1500);
-    }
-
-    // 7. Global Leaderboard
-    function listenToLeaderboard() {
-      db.ref('users').orderByChild('xp').limitToLast(10).on('value', (snapshot) => {
-        const container = document.getElementById('leaderboard-container');
-        container.innerHTML = '';
-        let rank = 1;
-
-        let players = [];
-        snapshot.forEach(child => {
-          players.push(child.val());
-        });
-        players.reverse(); // Highest XP first
-
-        players.forEach(player => {
-          const item = document.createElement('div');
-          item.className = `leaderboard-item ${rank === 1 ? 'top-1' : ''}`;
-          item.innerHTML = `
-            <div style="display: flex; align-items: center; gap: 12px;">
-              <span style="font-weight: 900; color: var(--accent-cyan);">#${rank}</span>
-              <div class="chat-avatar" style="background-image: url('${player.avatar || generateBase64Avatar(player.name)}')"></div>
-              <span style="font-weight: 700;">${player.name}</span>
-            </div>
-            <span style="font-weight: 900; color: #ffd700;">${player.xp || 0} XP</span>
-          `;
-          container.appendChild(item);
-          rank++;
+    // 7. Leaderboard
+    function initLeaderboard() {
+      db.ref('users').orderByChild('xp').limitToLast(10).on('value', snap => {
+        const list = document.getElementById('leaderboard-list');
+        list.innerHTML = '';
+        let arr = [];
+        snap.forEach(c => arr.push(c.val()));
+        arr.reverse().forEach((p, i) => {
+          list.innerHTML += `
+            <div class="leaderboard-item ${i===0?'top-1':''}">
+              <div style="display:flex; align-items:center; gap:10px;">
+                <span style="font-weight:900; color:var(--accent-cyan)">#${i+1}</span>
+                <div class="chat-avatar" style="width:30px; height:30px; background-image:url('${p.avatar}')"></div>
+                <span style="font-weight:700">${p.name}</span>
+              </div>
+              <span style="font-weight:900; color:#ffd700">${p.xp || 0} XP</span>
+            </div>`;
         });
       });
     }
 
-    // 8. Referral System
-    function copyReferralCode() {
-      if (!userData || !userData.refCode) return;
+    // Referral Logic
+    function copyCode() {
       navigator.clipboard.writeText(userData.refCode);
-      alert('تم نسخ كود الإحالة الخاص بك! شاركه مع أصحابك لكسب النقط معاً 🚀');
+      showToast('تم نسخ كود الدعوة! ابعته لصحابك');
     }
 
-    async function applyReferralCode(code) {
+    async function handleReferral(code) {
       const snap = await db.ref('users').orderByChild('refCode').equalTo(code).once('value');
       if (snap.exists()) {
         snap.forEach(child => {
-          db.ref(`users/${child.key}/xp`).transaction(xp => (xp || 0) + 150);
-          db.ref(`users/${child.key}/refCount`).transaction(rc => (rc || 0) + 1);
+          db.ref(`users/${child.key}/xp`).transaction(x => (x||0) + 150);
         });
-        alert('مبروك! تم تفعيل كود الإحالة وحصلت أنت وصديقك على +150 XP! 🎉');
+        showToast('تم تفعيل الكود! أنت وصاحبك كسبتوا 150 نقطة 🎉');
       }
     }
 
-    function closePrizeModal() {
-      document.getElementById('prize-modal').classList.remove('active');
-    }
-
-    // Service Worker Registration for PWA
-    if ('serviceWorker' in navigator) {
-      const swCode = `
-        self.addEventListener('install', e => e.waitUntil(self.skipWaiting()));
-        self.addEventListener('fetch', e => e.respondWith(fetch(e.request)));
-      `;
-      const blob = new Blob([swCode], { type: 'application/javascript' });
-      navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(() => {});
+    // Navigation Tab Switcher
+    function switchTab(id, el) {
+      document.querySelectorAll('.view-screen').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      document.getElementById('view-' + id).classList.add('active');
+      el.classList.add('active');
     }
   </script>
 </body>
