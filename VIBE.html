@@ -2,10 +2,14 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>VIBE Unite - Super Network</title>
   
   <meta name="theme-color" content="#07080b">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="manifest" href="data:application/manifest+json,{%22name%22:%22VIBE%20Unite%22,%22short_name%22:%22VIBE%22,%22start_url%22:%22/%22,%22display%22:%22standalone%22,%22background_color%22:%22%2307080b%22,%22theme_color%22:%22%2300F0FF%22}">
+  
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
   
   <!-- Firebase SDK -->
@@ -15,68 +19,76 @@
 
   <style>
     :root {
-      --bg-dark: #07080b; --glass-card: rgba(15, 20, 35, 0.7);
-      --glass-border: rgba(0, 240, 255, 0.15); --accent-cyan: #00F0FF;
+      --bg-dark: #07080b; --glass-card: rgba(15, 20, 35, 0.75);
+      --glass-border: rgba(0, 240, 255, 0.2); --accent-cyan: #00F0FF;
       --accent-violet: #8A2BE2; --text-main: #FFFFFF; --text-muted: #8E95B5;
+      --gold-glow: #FFD700;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; outline: none; }
-    body { background-color: var(--bg-dark); color: var(--text-main); min-height: 100vh; overflow-x: hidden; padding-bottom: 75px;}
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; outline: none; -webkit-tap-highlight-color: transparent; }
+    body { background-color: var(--bg-dark); color: var(--text-main); min-height: 100vh; overflow-x: hidden; padding-bottom: 80px; }
     
-    /* Custom Scrollbar */
-    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
     ::-webkit-scrollbar-thumb { background: var(--accent-violet); border-radius: 10px; }
 
-    /* Glass UI */
-    .glass { background: var(--glass-card); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border: 1px solid var(--glass-border); border-radius: 16px; }
-    .btn { background: linear-gradient(135deg, var(--accent-cyan), var(--accent-violet)); color: #000; border: none; border-radius: 12px; padding: 12px; font-weight: 900; cursor: pointer; transition: 0.2s; text-align: center; }
+    /* Ultra Glass UI */
+    .glass { background: var(--glass-card); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 18px; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); }
+    .btn { background: linear-gradient(135deg, var(--accent-cyan), var(--accent-violet)); color: #000; border: none; border-radius: 12px; padding: 12px; font-weight: 900; cursor: pointer; transition: 0.2s ease; text-align: center; }
     .btn:active { transform: scale(0.95); }
     .btn.outline { background: transparent; border: 1px solid var(--accent-cyan); color: var(--accent-cyan); }
-    .input-glass { width: 100%; background: rgba(0,0,0,0.4); border: 1px solid var(--glass-border); border-radius: 12px; padding: 12px; color: #fff; transition: 0.3s; }
-    .input-glass:focus { border-color: var(--accent-cyan); }
+    .btn.danger { background: linear-gradient(135deg, #ff4b4b, #b30000); color: #fff; }
+    .input-glass { width: 100%; background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); border-radius: 12px; padding: 12px; color: #fff; font-size: 16px; transition: 0.3s; }
+    .input-glass:focus { border-color: var(--accent-cyan); box-shadow: 0 0 10px rgba(0,240,255,0.3); }
 
     /* Header */
-    header { position: sticky; top: 0; z-index: 100; padding: 15px; display: flex; justify-content: space-between; align-items: center; background: rgba(7, 8, 11, 0.9); border-bottom: 1px solid var(--glass-border); }
-    .logo { font-weight: 900; font-size: 1.4rem; color: #fff; }
+    header { position: sticky; top: 0; z-index: 100; padding: 12px 18px; display: flex; justify-content: space-between; align-items: center; background: rgba(7, 8, 11, 0.85); backdrop-filter: blur(15px); border-bottom: 1px solid var(--glass-border); }
+    .logo { font-weight: 900; font-size: 1.4rem; color: #fff; letter-spacing: 0.5px; }
     .logo span { color: var(--accent-cyan); }
 
     /* Nav Bar */
-    .nav-bar { position: fixed; bottom: 0; width: 100%; background: rgba(10, 12, 20, 0.95); backdrop-filter: blur(20px); border-top: 1px solid var(--glass-border); display: flex; justify-content: space-around; padding: 10px 0; z-index: 1000; }
-    .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-muted); font-size: 0.75rem; font-weight: 700; cursor: pointer; }
-    .nav-item.active { color: var(--accent-cyan); transform: translateY(-3px); }
+    .nav-bar { position: fixed; bottom: 0; width: 100%; background: rgba(10, 12, 20, 0.95); backdrop-filter: blur(20px); border-top: 1px solid var(--glass-border); display: flex; justify-content: space-around; padding: 10px 0 calc(10px + env(safe-area-inset-bottom)); z-index: 1000; }
+    .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-muted); font-size: 0.75rem; font-weight: 700; cursor: pointer; transition: 0.2s; }
+    .nav-item.active { color: var(--accent-cyan); transform: translateY(-2px); }
     .nav-item svg { width: 24px; height: 24px; fill: currentColor; margin-bottom: 3px; }
 
     /* Views */
-    .view { display: none; padding: 15px; animation: fadeIn 0.3s; }
+    .view { display: none; padding: 15px; animation: fadeIn 0.3s forwards; }
     .view.active { display: block; }
-    @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* Notes Section */
-    .notes-container { display: flex; gap: 15px; overflow-x: auto; padding-bottom: 15px; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); }
-    .note-bubble { position: relative; display: flex; flex-direction: column; align-items: center; min-width: 70px; cursor: pointer; }
-    .note-avatar { width: 64px; height: 64px; border-radius: 50%; border: 2px solid var(--accent-cyan); background-size: cover; background-position: center; }
-    .note-text { position: absolute; top: -10px; background: var(--glass-card); border: 1px solid var(--glass-border); padding: 4px 8px; border-radius: 12px; font-size: 0.7rem; white-space: nowrap; max-width: 80px; overflow: hidden; text-overflow: ellipsis; }
+    /* Notes */
+    .notes-container { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 12px; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .note-bubble { position: relative; display: flex; flex-direction: column; align-items: center; min-width: 68px; cursor: pointer; }
+    .note-avatar { width: 60px; height: 60px; border-radius: 50%; border: 2px solid var(--accent-cyan); background-size: cover; background-position: center; }
+    .note-text { position: absolute; top: -8px; background: rgba(0, 240, 255, 0.25); backdrop-filter: blur(8px); border: 1px solid var(--accent-cyan); padding: 3px 8px; border-radius: 12px; font-size: 0.65rem; white-space: nowrap; max-width: 75px; overflow: hidden; text-overflow: ellipsis; color: #fff; font-weight: bold; }
 
     /* Posts */
-    .post { margin-bottom: 15px; padding: 15px; }
+    .post { margin-bottom: 15px; padding: 15px; position: relative; }
     .post-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
     .user-info { display: flex; align-items: center; gap: 10px; cursor: pointer; }
-    .avatar-sm { width: 40px; height: 40px; border-radius: 50%; background-size: cover; border: 1px solid var(--accent-violet); }
-    .post-img { width: 100%; border-radius: 12px; margin-top: 10px; display: none; }
-    .post-actions { display: flex; justify-content: space-between; margin-top: 15px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; }
+    .avatar-sm { width: 42px; height: 42px; border-radius: 50%; background-size: cover; background-position: center; border: 1px solid var(--accent-violet); }
+    .post-img { width: 100%; border-radius: 12px; margin-top: 10px; display: none; border: 1px solid rgba(255,255,255,0.1); }
+    .post-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; }
 
-    /* Chat & DMs */
-    .chat-box { height: calc(100vh - 200px); overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding: 10px; border-radius: 12px; background: rgba(0,0,0,0.2); }
-    .msg { max-width: 80%; padding: 10px; border-radius: 15px; font-size: 0.9rem; clear: both;}
-    .msg.mine { background: var(--accent-violet); align-self: flex-end; border-bottom-right-radius: 0; }
-    .msg.other { background: rgba(255,255,255,0.1); align-self: flex-start; border-bottom-left-radius: 0; }
+    /* Chat & Mobile Compatibility */
+    .chat-box { height: calc(100vh - 230px); height: calc(100dvh - 230px); overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding: 12px; border-radius: 16px; background: rgba(0,0,0,0.3); }
+    .msg { max-width: 82%; padding: 10px 14px; border-radius: 16px; font-size: 0.9rem; word-break: break-word; line-height: 1.4; }
+    .msg.mine { background: linear-gradient(135deg, var(--accent-violet), #5d1aa3); align-self: flex-end; border-bottom-right-radius: 2px; }
+    .msg.other { background: rgba(255,255,255,0.08); align-self: flex-start; border-bottom-left-radius: 2px; border: 1px solid rgba(255,255,255,0.05); }
 
     /* Modals & Overlays */
-    .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-dark); z-index: 2000; display: none; flex-direction: column; }
-    .overlay-header { display: flex; justify-content: space-between; padding: 15px; border-bottom: 1px solid var(--glass-border); align-items: center;}
-    .overlay-content { padding: 15px; overflow-y: auto; flex: 1; }
+    .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(7, 8, 11, 0.95); backdrop-filter: blur(20px); z-index: 2000; display: none; flex-direction: column; }
+    .overlay-header { display: flex; justify-content: space-between; padding: 15px 20px; border-bottom: 1px solid var(--glass-border); align-items: center; }
+    .overlay-content { padding: 20px; overflow-y: auto; flex: 1; }
     
-    #toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: var(--accent-cyan); color: #000; padding: 10px 20px; border-radius: 20px; font-weight: bold; z-index: 9999; display: none; }
-    .leaderboard-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    #toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: var(--accent-cyan); color: #000; padding: 10px 24px; border-radius: 30px; font-weight: 900; z-index: 9999; display: none; box-shadow: 0 0 15px var(--accent-cyan); }
+    .leaderboard-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    
+    /* Winner Wheel Card */
+    .draw-card { background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(138,43,226,0.2)); border: 2px solid var(--gold-glow); border-radius: 20px; padding: 20px; text-align: center; margin-bottom: 20px; animation: pulseGlow 2s infinite alternate; }
+    @keyframes pulseGlow { from { box-shadow: 0 0 10px rgba(255,215,0,0.2); } to { box-shadow: 0 0 25px rgba(255,215,0,0.6); } }
+    
+    /* Typewriter animation area */
+    #prize-typewriter { font-size: 1.2rem; font-weight: 900; color: var(--gold-glow); margin-top: 15px; min-height: 40px; }
   </style>
 </head>
 <body>
@@ -94,34 +106,38 @@
     </div>
   </div>
 
-  <!-- Profile Setup -->
-  <div id="setup-screen" class="overlay" style="justify-content: center; align-items: center; background: rgba(7,8,11,0.95);">
+  <!-- Profile Setup Screen -->
+  <div id="setup-screen" class="overlay" style="justify-content: center; align-items: center;">
     <div class="glass" style="padding: 30px; text-align: center; width: 90%; max-width: 400px;">
       <h3>إعداد حسابك</h3>
       <div id="setup-avatar" class="avatar-sm" style="width:100px; height:100px; margin: 20px auto; cursor: pointer; border-width: 3px;" onclick="document.getElementById('avatar-upload').click()"></div>
-      <input type="file" id="avatar-upload" hidden accept="image/*" onchange="handleAvatar(this)">
+      <input type="file" id="avatar-upload" hidden accept="image/*" onchange="handleAvatar(this, 'setup-avatar')">
       <input type="text" id="setup-name" class="input-glass" placeholder="الاسم كامل" style="margin-bottom: 10px;">
       <input type="text" id="setup-username" class="input-glass" placeholder="اليوزرنيم (بدون مسافات)" style="margin-bottom: 20px;">
       <button class="btn" style="width: 100%;" onclick="saveProfile()">انطلق 🚀</button>
     </div>
   </div>
 
-  <!-- Main App -->
-  <div id="main-app" style="display: none; max-width: 600px; margin: 0 auto; position: relative;">
+  <!-- Main Application -->
+  <div id="main-app" style="display: none; max-width: 600px; margin: 0 auto;">
     
     <header>
       <div class="logo">VIBE <span>Unite</span></div>
-      <div style="display: flex; align-items: center; gap: 10px;">
+      <div style="display: flex; align-items: center; gap: 15px;">
+        <!-- Notifications Bell -->
+        <div style="position:relative; cursor:pointer;" onclick="openNotifications()">
+          <span style="font-size: 1.3rem;">🔔</span>
+          <span id="notif-badge" style="position:absolute; top:-4px; right:-6px; background:#ff4d4d; color:#fff; font-size:0.65rem; font-weight:900; padding:2px 6px; border-radius:10px; display:none;">0</span>
+        </div>
         <span style="color: var(--accent-cyan); font-weight: bold;" id="header-xp">0 🪙</span>
         <div id="header-avatar" class="avatar-sm" onclick="openProfile(uid)"></div>
       </div>
     </header>
 
-    <!-- TAB 1: Home/Feed -->
+    <!-- TAB 1: Home / Feed -->
     <div id="view-home" class="view active">
       <!-- Notes -->
       <div class="notes-container" id="notes-list">
-        <!-- Add Note Btn -->
         <div class="note-bubble" onclick="openAddNote()">
           <div class="note-avatar" id="my-note-avatar" style="border-style: dashed;"></div>
           <div style="font-size: 0.7rem; margin-top: 5px;">+ أضف Note</div>
@@ -129,15 +145,15 @@
       </div>
 
       <!-- Add Post -->
-      <div class="glass" style="padding: 15px; margin-bottom: 15px; display: flex; gap: 10px;">
+      <div class="glass" style="padding: 15px; margin-bottom: 15px; display: flex; gap: 10px; align-items: center;">
         <input type="text" id="post-text" class="input-glass" placeholder="اكتب ثريد أو ارفع صورة...">
-        <button class="btn outline" onclick="document.getElementById('post-img-upload').click()">📷</button>
+        <button class="btn outline" style="padding: 10px 14px;" onclick="document.getElementById('post-img-upload').click()">📷</button>
         <button class="btn" onclick="publishPost()">نشر</button>
         <input type="file" id="post-img-upload" hidden accept="image/*" onchange="preparePostImage(this)">
       </div>
       <div id="post-img-preview" style="display:none; color: var(--accent-cyan); font-size: 0.8rem; text-align:center; margin-bottom:10px;">تم إرفاق صورة جاهزة للنشر!</div>
 
-      <!-- Feed -->
+      <!-- Feed Container -->
       <div id="feed-container"></div>
     </div>
 
@@ -149,27 +165,37 @@
 
     <!-- TAB 3: Global Chat -->
     <div id="view-global" class="view">
-      <div class="glass">
-        <h3 style="margin-bottom: 10px; color: var(--accent-violet);">الشات العام 🌍</h3>
+      <div class="glass" style="padding: 12px;">
+        <h3 style="margin-bottom: 10px; color: var(--accent-cyan);">الشات العام 🌍</h3>
         <div class="chat-box" id="global-chat-box"></div>
         <div style="display: flex; gap: 10px; margin-top: 10px;">
-          <input type="text" id="global-msg" class="input-glass" placeholder="اكتب رسالة للجميع...">
+          <input type="text" id="global-msg" class="input-glass" placeholder="اكتب رسالة للجميع..." onkeypress="if(event.key==='Enter') sendGlobalMsg()">
           <button class="btn" onclick="sendGlobalMsg()">إرسال</button>
         </div>
       </div>
     </div>
 
-    <!-- TAB 4: Wallet & Rank -->
+    <!-- TAB 4: Wallet & Leaderboard -->
     <div id="view-wallet" class="view">
-      <div class="glass" style="text-align: center; margin-bottom: 15px;">
-        <h2 style="color: var(--accent-cyan); margin-bottom: 5px;">محفظتك</h2>
-        <h1 style="font-size: 3rem; margin: 10px 0;" id="wallet-xp">0</h1>
-        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 15px;">المركز الأول كل أسبوع يكسب الجائزة!</p>
-        <button class="btn" style="width: 100%; background: #25D366; color: white;" onclick="withdrawToWhatsApp()">سحب الأرباح (WhatsApp)</button>
+      <!-- Draw Attempts Card for #1 or User with attempts -->
+      <div id="draw-banner" class="draw-card" style="display:none;">
+        <h2 style="color: var(--gold-glow); font-size: 1.4rem;">🎉 فرصة السحب الأسبوعية!</h2>
+        <p style="font-size: 0.85rem; color: #ddd; margin: 8px 0;">أنت الأول أو تملك فرصة سحب متاحة بحسابك!</p>
+        <button class="btn" style="background: linear-gradient(135deg, #FFD700, #FF8C00); width: 100%; margin-top: 5px;" onclick="openDrawModal()">إبدأ السحب الآن 🎰</button>
       </div>
 
-      <div class="glass">
-        <h3 style="margin-bottom: 10px;">🏆 ترتيب الأسبوع (Top 10)</h3>
+      <div class="glass" style="text-align: center; margin-bottom: 15px; padding: 20px;">
+        <h2 style="color: var(--accent-cyan); margin-bottom: 5px;">محفظتك</h2>
+        <h1 style="font-size: 3rem; margin: 10px 0; font-weight:900;" id="wallet-xp">0</h1>
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 15px;">المركز الأول كل أسبوع يحصل على فرصة السحب الجائزة!</p>
+        <button class="btn" style="width: 100%; background: #25D366; color: white;" onclick="withdrawToWhatsApp()">سحب الأرباح عبر (WhatsApp)</button>
+      </div>
+
+      <div class="glass" style="padding: 15px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 12px;">
+          <h3>🏆 ترتيب الأسبوع (Top 10)</h3>
+          <small style="color: var(--accent-cyan); font-weight: bold;">تحديث الجمعة 00:00</small>
+        </div>
         <div id="leaderboard"></div>
       </div>
     </div>
@@ -190,7 +216,7 @@
       <button class="btn outline" style="padding: 5px 15px;" onclick="closeProfile()">رجوع</button>
     </div>
     <div class="overlay-content" style="text-align: center;">
-      <div id="prof-avatar" class="avatar-sm" style="width: 120px; height: 120px; margin: 0 auto 15px;"></div>
+      <div id="prof-avatar" class="avatar-sm" style="width: 110px; height: 110px; margin: 0 auto 15px; border-width:3px;"></div>
       <h2 id="prof-name">الاسم</h2>
       <p style="color: var(--accent-cyan); margin-bottom: 15px;">@<span id="prof-username">يوزر</span></p>
       
@@ -200,12 +226,56 @@
       </div>
 
       <div id="prof-actions" style="display: flex; gap: 10px; justify-content: center; margin-bottom: 20px;">
-        <button id="btn-follow" class="btn" style="flex: 1; max-width: 150px;">متابعة</button>
-        <button id="btn-dm" class="btn outline" style="flex: 1; max-width: 150px;">مراسلة</button>
+        <button id="btn-follow" class="btn" style="flex: 1; max-width: 140px;">متابعة</button>
+        <button id="btn-dm" class="btn outline" style="flex: 1; max-width: 140px;">مراسلة</button>
+        <button id="btn-edit-prof" class="btn outline" style="display:none; flex: 1; max-width: 140px;" onclick="openEditProfile()">تعديل حسابي</button>
       </div>
 
-      <h3 style="text-align: right; border-bottom: 1px solid var(--glass-border); padding-bottom: 5px;">البوستات (آخر 72 ساعة)</h3>
-      <div id="prof-posts" style="text-align: right; margin-top: 15px;"></div>
+      <h3 style="text-align: right; border-bottom: 1px solid var(--glass-border); padding-bottom: 5px; margin-bottom: 10px;">البوستات (آخر 72 ساعة)</h3>
+      <div id="prof-posts" style="text-align: right;"></div>
+    </div>
+  </div>
+
+  <!-- Profile Edit Modal -->
+  <div id="edit-profile-overlay" class="overlay">
+    <div class="overlay-header">
+      <h3>تعديل البيانات الشخصية</h3>
+      <button class="btn outline" style="padding: 5px 15px;" onclick="closeEditProfile()">إلغاء</button>
+    </div>
+    <div class="overlay-content" style="text-align: center;">
+      <div id="edit-avatar-preview" class="avatar-sm" style="width:100px; height:100px; margin: 10px auto 15px; cursor:pointer; border-width: 3px;" onclick="document.getElementById('edit-avatar-upload').click()"></div>
+      <input type="file" id="edit-avatar-upload" hidden accept="image/*" onchange="handleAvatar(this, 'edit-avatar-preview')">
+      
+      <label style="display:block; text-align:right; font-size:0.8rem; color:var(--text-muted); margin-bottom:5px;">الاسم الكامل:</label>
+      <input type="text" id="edit-name" class="input-glass" style="margin-bottom: 15px;">
+      
+      <label style="display:block; text-align:right; font-size:0.8rem; color:var(--text-muted); margin-bottom:5px;">اسم المستخدم (اليوزرنيم):</label>
+      <input type="text" id="edit-username" class="input-glass" style="margin-bottom: 5px;">
+      <small style="color: var(--text-muted); display:block; text-align:right; margin-bottom: 20px;">⚠️ يمكن تغيير اسم المستخدم مرة واحدة كل 14 يوماً فقط، ويجب أن يكون فريداً.</small>
+
+      <button class="btn" style="width: 100%;" onclick="updateProfile()">حفظ التعديلات 💾</button>
+    </div>
+  </div>
+
+  <!-- Notifications Modal -->
+  <div id="notif-overlay" class="overlay">
+    <div class="overlay-header">
+      <h3>الإشعارات 🔔</h3>
+      <button class="btn outline" style="padding: 5px 15px;" onclick="closeNotifications()">إغلاق</button>
+    </div>
+    <div class="overlay-content" id="notif-list"></div>
+  </div>
+
+  <!-- Draw Modal (Prize Reveal) -->
+  <div id="draw-modal" class="overlay" style="justify-content: center; align-items: center;">
+    <div class="glass" style="padding: 30px; text-align: center; width: 90%; max-width: 420px; border-color: var(--gold-glow);">
+      <h2 style="color: var(--gold-glow); margin-bottom: 10px;">🎰 سحب جائزة المركز الأول</h2>
+      <p style="color: var(--text-muted); font-size: 0.9rem;">اضغط على الزر واكتشف جائزتك الآن!</p>
+      
+      <div id="prize-typewriter"></div>
+
+      <button id="spin-btn" class="btn" style="width: 100%; margin-top: 20px; background: linear-gradient(135deg, #FFD700, #FF8C00);" onclick="startPrizeReveal()">سحب الجائزة 🎁</button>
+      <button class="btn outline" style="width: 100%; margin-top: 10px;" onclick="document.getElementById('draw-modal').style.display='none'">إغلاق</button>
     </div>
   </div>
 
@@ -218,14 +288,14 @@
     <div class="overlay-content" style="display: flex; flex-direction: column;">
       <div class="chat-box" id="dm-box" style="flex: 1; height: auto;"></div>
       <div style="display: flex; gap: 10px; margin-top: 10px;">
-        <input type="text" id="dm-msg" class="input-glass" placeholder="اكتب رسالتك الخاصة...">
+        <input type="text" id="dm-msg" class="input-glass" placeholder="اكتب رسالتك الخاصة..." onkeypress="if(event.key==='Enter') sendDM()">
         <button class="btn" onclick="sendDM()">إرسال</button>
       </div>
     </div>
   </div>
 
   <script>
-    // 1. Firebase Config (بياناتك)
+    // 1. Firebase Configuration
     const firebaseConfig = {
       apiKey: "AIzaSyBi1jUXrq7DMUbHFSb2JcNF93P5g0HJl9E",
       authDomain: "vibe-783f3.firebaseapp.com",
@@ -236,11 +306,13 @@
     const auth = firebase.auth(); const db = firebase.database();
 
     // Global Variables
-    let uid = null; let uData = {}; let setupBase64 = null; let postBase64 = null;
+    let uid = null; let uData = {}; 
+    let tempAvatarBase64 = null; let postBase64 = null;
     let currentProfileId = null; let currentChatId = null;
 
-    // Helpers
+    // Helper Functions
     function showToast(m) { let t=document.getElementById('toast'); t.innerText=m; t.style.display='block'; setTimeout(()=>t.style.display='none',3000); }
+    
     function switchTab(t) { 
       document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
       document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
@@ -248,7 +320,7 @@
       event.currentTarget.classList.add('active');
     }
 
-    // 2. Authentication
+    // 2. Auth Listeners
     auth.onAuthStateChanged(user => {
       if (user) {
         uid = user.uid;
@@ -266,10 +338,10 @@
       try {
         try { await auth.signInWithEmailAndPassword(e, p); } 
         catch (err) { await auth.createUserWithEmailAndPassword(e, p); }
-      } catch (err) { showToast('خطأ في التسجيل!'); console.log(err); }
+      } catch (err) { showToast('خطأ في عملية التسجيل!'); }
     }
 
-    // 3. Profile Setup & Loading
+    // 3. Profile Setup & Initialization
     function checkProfileSetup() {
       db.ref(`users/${uid}`).on('value', snap => {
         if(!snap.exists() || !snap.val().username) {
@@ -278,22 +350,23 @@
           uData = snap.val();
           document.getElementById('setup-screen').style.display = 'none';
           document.getElementById('main-app').style.display = 'block';
-          updateHeader(); loadNotes(); loadFeed(); loadLeaderboard(); loadGlobalChat();
+          updateHeader(); loadNotes(); loadFeed(); loadLeaderboard(); loadGlobalChat(); listenNotifications();
+          checkFridayReset();
         }
       });
     }
 
-    function handleAvatar(input) {
+    function handleAvatar(input, targetElementId) {
       const file = input.files[0]; if(!file) return;
       const r = new FileReader();
       r.onload = (e) => {
         const img = new Image(); img.src = e.target.result;
         img.onload = () => {
           const canvas = document.createElement('canvas'); const ctx = canvas.getContext('2d');
-          canvas.width = 150; canvas.height = 150; // Resize
+          canvas.width = 150; canvas.height = 150;
           ctx.drawImage(img, 0, 0, 150, 150);
-          setupBase64 = canvas.toDataURL('image/jpeg', 0.6);
-          document.getElementById('setup-avatar').style.backgroundImage = `url(${setupBase64})`;
+          tempAvatarBase64 = canvas.toDataURL('image/jpeg', 0.6);
+          document.getElementById(targetElementId).style.backgroundImage = `url(${tempAvatarBase64})`;
         }
       }
       r.readAsDataURL(file);
@@ -302,22 +375,118 @@
     async function saveProfile() {
       const n = document.getElementById('setup-name').value;
       const user = document.getElementById('setup-username').value.replace(/\s+/g, '').toLowerCase();
-      if(!n || !user || !setupBase64) return showToast('كمل بياناتك وحط صورة!');
+      if(!n || !user || !tempAvatarBase64) return showToast('برجاء استكمال كافة البيانات والصورة!');
+
+      const taken = await checkUsernameExists(user);
+      if(taken) return showToast('اسم المستخدم هذا مأخوذ بالفعل!');
       
-      // Check username exists (simple check)
       db.ref(`users/${uid}`).set({
-        name: n, username: user, avatar: setupBase64, xp: 50, followers: 0, joined: Date.now()
-      }).then(()=> showToast('مرحباً بك في Vibe!'));
+        name: n, username: user, avatar: tempAvatarBase64, xp: 50, followers: 0, drawAttempts: 0, lastUsernameChange: Date.now()
+      }).then(()=> { tempAvatarBase64 = null; showToast('أهلاً بك في VIBE Unite!'); });
     }
 
     function updateHeader() {
-      document.getElementById('header-xp').innerText = `${uData.xp} 🪙`;
-      document.getElementById('wallet-xp').innerText = uData.xp;
+      document.getElementById('header-xp').innerText = `${uData.xp || 0} 🪙`;
+      document.getElementById('wallet-xp').innerText = uData.xp || 0;
       document.getElementById('header-avatar').style.backgroundImage = `url(${uData.avatar})`;
       document.getElementById('my-note-avatar').style.backgroundImage = `url(${uData.avatar})`;
+
+      // Show Draw Banner if user has stored attempts
+      if(uData.drawAttempts && uData.drawAttempts > 0) {
+        document.getElementById('draw-banner').style.display = 'block';
+      } else {
+        document.getElementById('draw-banner').style.display = 'none';
+      }
     }
 
-    // 4. Notes System (24h lifespan)
+    // 4. Notifications System
+    function sendNotification(targetUid, title, text) {
+      if(targetUid === uid) return;
+      db.ref(`notifications/${targetUid}`).push({
+        title: title, text: text, timestamp: Date.now(), read: false
+      });
+    }
+
+    function listenNotifications() {
+      db.ref(`notifications/${uid}`).on('value', snap => {
+        let unread = 0; const list = document.getElementById('notif-list'); list.innerHTML = '';
+        const items = [];
+        snap.forEach(child => {
+          const n = child.val(); if(!n.read) unread++;
+          items.unshift(n);
+        });
+
+        const badge = document.getElementById('notif-badge');
+        if(unread > 0) { badge.innerText = unread; badge.style.display = 'block'; }
+        else { badge.style.display = 'none'; }
+
+        items.forEach(n => {
+          list.innerHTML += `
+            <div class="glass" style="padding:12px; margin-bottom:10px;">
+              <strong>${n.title}</strong>
+              <div style="font-size:0.85rem; color:var(--text-muted); margin-top:3px;">${n.text}</div>
+            </div>`;
+        });
+        if(items.length === 0) list.innerHTML = '<p style="text-align:center; color:var(--text-muted);">لا توجد إشعارات حالياً.</p>';
+      });
+    }
+
+    function openNotifications() {
+      document.getElementById('notif-overlay').style.display = 'flex';
+      db.ref(`notifications/${uid}`).once('value', snap => {
+        snap.forEach(child => { child.ref.update({ read: true }); });
+      });
+    }
+    function closeNotifications() { document.getElementById('notif-overlay').style.display = 'none'; }
+
+    // 5. Profile Edit & 14-Day Username Limit Check
+    function checkUsernameExists(username) {
+      return db.ref('users').orderByChild('username').equalTo(username).once('value').then(snap => snap.exists());
+    }
+
+    function openEditProfile() {
+      document.getElementById('edit-name').value = uData.name;
+      document.getElementById('edit-username').value = uData.username;
+      document.getElementById('edit-avatar-preview').style.backgroundImage = `url(${uData.avatar})`;
+      document.getElementById('edit-profile-overlay').style.display = 'flex';
+    }
+    function closeEditProfile() { document.getElementById('edit-profile-overlay').style.display = 'none'; }
+
+    async function updateProfile() {
+      const newName = document.getElementById('edit-name').value.trim();
+      const newUsername = document.getElementById('edit-username').value.replace(/\s+/g, '').toLowerCase().trim();
+      
+      if(!newName || !newUsername) return showToast('يرجى ملا البيانات أولاً!');
+
+      const updates = { name: newName };
+      if(tempAvatarBase64) updates.avatar = tempAvatarBase64;
+
+      // Check username change limit (14 days)
+      if(newUsername !== uData.username) {
+        const now = Date.now();
+        const lastChange = uData.lastUsernameChange || 0;
+        const diffDays = (now - lastChange) / (1000 * 60 * 60 * 24);
+
+        if(diffDays < 14) {
+          return showToast(`يمكنك تغيير اليوزرنيم بعد ${Math.ceil(14 - diffDays)} يوم.`);
+        }
+
+        const isTaken = await checkUsernameExists(newUsername);
+        if(isTaken) return showToast('اسم المستخدم هذا مستخدم بالفعل!');
+
+        updates.username = newUsername;
+        updates.lastUsernameChange = now;
+      }
+
+      db.ref(`users/${uid}`).update(updates).then(() => {
+        showToast('تم تحديث البيانات بنجاح!');
+        tempAvatarBase64 = null;
+        closeEditProfile();
+        closeProfile();
+      });
+    }
+
+    // 6. Notes System (24h lifespan)
     function openAddNote() {
       const txt = prompt("اكتب Note بتفكر في إيه؟ (بتختفي بعد 24 ساعة)");
       if(txt && txt.trim() !== '') {
@@ -329,12 +498,11 @@
     function loadNotes() {
       db.ref('notes').on('value', snap => {
         const list = document.getElementById('notes-list');
-        // Keep the add button
         list.innerHTML = `<div class="note-bubble" onclick="openAddNote()"><div class="note-avatar" id="my-note-avatar" style="background-image:url(${uData.avatar}); border-style:dashed;"></div><div style="font-size: 0.7rem; margin-top: 5px;">+ أضف Note</div></div>`;
         const now = Date.now();
         snap.forEach(child => {
           const note = child.val();
-          if(now - note.timestamp < 24*60*60*1000) { // 24 hours
+          if(now - note.timestamp < 24*60*60*1000) {
             db.ref(`users/${child.key}`).once('value', uSnap => {
               const u = uSnap.val();
               if(u) {
@@ -342,7 +510,7 @@
                   <div class="note-bubble" onclick="openProfile('${child.key}')">
                     <div class="note-text">${note.text}</div>
                     <div class="note-avatar" style="background-image:url(${u.avatar}); border-color: var(--accent-violet);"></div>
-                    <div style="font-size:0.7rem; margin-top:5px;">${u.name.split(' ')[0]}</div>
+                    <div style="font-size:0.72rem; margin-top:5px; font-weight:bold;">${u.name.split(' ')[0]}</div>
                   </div>`;
               }
             });
@@ -351,7 +519,7 @@
       });
     }
 
-    // 5. Posts System (72h lifespan)
+    // 7. Posts System & Deletion
     function preparePostImage(input) {
       const file = input.files[0]; if(!file) return;
       const r = new FileReader();
@@ -362,7 +530,7 @@
           const maxW = 500; const scale = maxW / img.width;
           canvas.width = maxW; canvas.height = img.height * scale;
           ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-          postBase64 = canvas.toDataURL('image/jpeg', 0.5); // High compression
+          postBase64 = canvas.toDataURL('image/jpeg', 0.5);
           document.getElementById('post-img-preview').style.display = 'block';
         }
       }
@@ -381,9 +549,14 @@
         postBase64 = null;
         document.getElementById('post-img-preview').style.display = 'none';
         showToast('تم النشر! بيختفي بعد 72 ساعة');
-        // Give author 5 XP for posting
-        db.ref(`users/${uid}/xp`).set((uData.xp || 0) + 5);
+        db.ref(`users/${uid}/xp`).transaction(current => (current || 0) + 5);
       });
+    }
+
+    function deletePost(postId) {
+      if(confirm('هل أنت تأكد من حذف هذا البوست؟')) {
+        db.ref(`posts/${postId}`).remove().then(() => showToast('تم حذف البوست!'));
+      }
     }
 
     function loadFeed() {
@@ -393,7 +566,6 @@
         const posts = [];
         snap.forEach(child => {
           const p = child.val(); p.id = child.key;
-          // Filter 72 hours
           if(now - p.timestamp < 72*60*60*1000) posts.unshift(p); 
         });
 
@@ -402,6 +574,8 @@
             const author = uSnap.val();
             if(!author) return;
             let imgHtml = p.image ? `<img src="${p.image}" class="post-img" style="display:block;">` : '';
+            let deleteBtn = p.authorId === uid ? `<button class="btn danger" style="padding:4px 10px; font-size:0.75rem;" onclick="deletePost('${p.id}')">🗑️ حذف</button>` : '';
+
             cont.innerHTML += `
               <div class="glass post">
                 <div class="post-header">
@@ -412,12 +586,13 @@
                       <div style="font-size:0.75rem; color:var(--text-muted)">@${author.username}</div>
                     </div>
                   </div>
+                  ${deleteBtn}
                 </div>
-                <div style="font-size: 0.95rem;">${p.text}</div>
+                <div style="font-size: 0.95rem; line-height:1.5;">${p.text}</div>
                 ${imgHtml}
                 <div class="post-actions">
                   <span style="color:var(--accent-cyan); font-weight:bold;">${p.upvotes || 0} 🪙</span>
-                  <button class="btn outline" style="padding:5px 15px;" onclick="investPost('${p.id}', '${p.authorId}')">ادعم بـ 1 🪙</button>
+                  <button class="btn outline" style="padding:6px 14px; font-size:0.8rem;" onclick="investPost('${p.id}', '${p.authorId}')">ادعم بـ 1 🪙</button>
                 </div>
               </div>
             `;
@@ -427,18 +602,18 @@
     }
 
     function investPost(postId, authorId) {
-      if(uData.xp < 1) return showToast('معكش رصيد كافي!');
-      if(authorId === uid) return showToast('مينفعش تدعم نفسك!');
+      if(uData.xp < 1) return showToast('رصيدك غير كافي للدعم!');
+      if(authorId === uid) return showToast('لا يمكنك دعم نفسك!');
       
-      db.ref(`users/${uid}/xp`).set(uData.xp - 1);
-      
-      db.ref(`posts/${postId}/upvotes`).transaction(current => (current || 0) + 1);
-      
-      db.ref(`users/${authorId}/xp`).transaction(current => (current || 0) + 1);
+      db.ref(`users/${uid}/xp`).transaction(c => (c || 0) - 1);
+      db.ref(`posts/${postId}/upvotes`).transaction(c => (c || 0) + 1);
+      db.ref(`users/${authorId}/xp`).transaction(c => (c || 0) + 1);
+
+      sendNotification(authorId, 'دعم جديد 🪙', `قام @${uData.username} بدعم منشورك بـ 1 Vibe Coin!`);
       showToast('دعمت البوست بـ 1 Vibe Coin!');
     }
 
-    // 6. Global Chat
+    // 8. Global Chat
     function sendGlobalMsg() {
       const msg = document.getElementById('global-msg').value;
       if(!msg.trim()) return;
@@ -447,16 +622,15 @@
     }
 
     function loadGlobalChat() {
-      db.ref('global_chat').limitToLast(50).on('child_added', snap => {
+      db.ref('global_chat').limitToLast(40).on('child_added', snap => {
         const m = snap.val();
         const box = document.getElementById('global-chat-box');
         db.ref(`users/${m.authorId}`).once('value', uSnap => {
-          const sender = uSnap.val();
-          if(!sender) return;
+          const sender = uSnap.val(); if(!sender) return;
           const isMe = m.authorId === uid;
           box.innerHTML += `
             <div class="msg ${isMe ? 'mine' : 'other'}">
-              ${!isMe ? `<strong style="color:var(--accent-cyan); font-size:0.7rem; cursor:pointer;" onclick="openProfile('${m.authorId}')">${sender.name}</strong><br>` : ''}
+              ${!isMe ? `<strong style="color:var(--accent-cyan); font-size:0.7rem; cursor:pointer; display:block; margin-bottom:2px;" onclick="openProfile('${m.authorId}')">${sender.name}</strong>` : ''}
               ${m.text}
             </div>
           `;
@@ -465,7 +639,7 @@
       });
     }
 
-    // 7. Search
+    // 9. Search
     function searchUsers(q) {
       const res = document.getElementById('search-results');
       if(q.length < 2) { res.innerHTML = ''; return; }
@@ -486,12 +660,12 @@
       });
     }
 
-    // 8. Profiles & Following
+    // 10. Profile View & Actions
     function openProfile(id) {
       currentProfileId = id;
       db.ref(`users/${id}`).once('value', snap => {
         const u = snap.val();
-        document.getElementById('prof-title').innerText = id === uid ? 'بروفايلي' : 'بروفايل';
+        document.getElementById('prof-title').innerText = id === uid ? 'حسابي' : 'الملف الشخصي';
         document.getElementById('prof-name').innerText = u.name;
         document.getElementById('prof-username').innerText = u.username;
         document.getElementById('prof-xp').innerText = u.xp || 0;
@@ -500,21 +674,20 @@
         
         const btnFollow = document.getElementById('btn-follow');
         const btnDm = document.getElementById('btn-dm');
+        const btnEdit = document.getElementById('btn-edit-prof');
         
         if(id === uid) {
-          btnFollow.style.display = 'none'; btnDm.style.display = 'none';
+          btnFollow.style.display = 'none'; btnDm.style.display = 'none'; btnEdit.style.display = 'block';
         } else {
-          btnFollow.style.display = 'block'; btnDm.style.display = 'block';
-          // Check if followed
+          btnFollow.style.display = 'block'; btnDm.style.display = 'block'; btnEdit.style.display = 'none';
           db.ref(`followers/${id}/${uid}`).once('value', fSnap => {
-            if(fSnap.exists()) { btnFollow.innerText = 'الغاء المتابعة'; btnFollow.classList.add('outline'); }
+            if(fSnap.exists()) { btnFollow.innerText = 'إلغاء المتابعة'; btnFollow.classList.add('outline'); }
             else { btnFollow.innerText = 'متابعة'; btnFollow.classList.remove('outline'); }
           });
           btnFollow.onclick = () => toggleFollow(id);
           btnDm.onclick = () => openDM(id, u.name);
         }
         
-        // Load User Posts
         db.ref('posts').orderByChild('authorId').equalTo(id).once('value', pSnap => {
           const cont = document.getElementById('prof-posts'); cont.innerHTML = '';
           const now = Date.now();
@@ -524,7 +697,7 @@
               cont.innerHTML += `<div class="glass" style="padding:10px; margin-bottom:10px; font-size:0.9rem;">${p.text}</div>`;
             }
           });
-          if(cont.innerHTML==='') cont.innerHTML = '<small style="color:var(--text-muted);">مفيش بوستات في آخر 72 ساعة.</small>';
+          if(cont.innerHTML==='') cont.innerHTML = '<small style="color:var(--text-muted);">لا توجد منشورات خلال آخر 72 ساعة.</small>';
         });
 
         document.getElementById('profile-overlay').style.display = 'flex';
@@ -544,20 +717,19 @@
         } else {
           ref.set(true);
           db.ref(`users/${targetId}/followers`).transaction(c => (c||0)+1);
-          document.getElementById('btn-follow').innerText = 'الغاء المتابعة';
+          sendNotification(targetId, 'متابع جديد 👤', `قام @${uData.username} بمتابعتك الان!`);
+          document.getElementById('btn-follow').innerText = 'إلغاء المتابعة';
           document.getElementById('btn-follow').classList.add('outline');
         }
       });
     }
 
-    // 9. Direct Messages (DMs)
+    // 11. Private DMs
     function openDM(targetId, targetName) {
       document.getElementById('dm-title').innerText = targetName;
-      // Generate unique chat ID for the two users
       currentChatId = uid < targetId ? `${uid}_${targetId}` : `${targetId}_${uid}`;
       document.getElementById('dm-box').innerHTML = '';
       
-      // Listener for this specific chat
       db.ref(`private_chats/${currentChatId}`).on('child_added', snap => {
         const m = snap.val();
         const isMe = m.authorId === uid;
@@ -566,7 +738,6 @@
         `;
         document.getElementById('dm-box').scrollTop = document.getElementById('dm-box').scrollHeight;
       });
-      
       document.getElementById('dm-overlay').style.display = 'flex';
     }
     
@@ -584,23 +755,25 @@
       document.getElementById('dm-msg').value = '';
     }
 
-    // 10. Leaderboard & WhatsApp Withdrawal
+    // 12. Leaderboard, Friday Reset & Progressive Draw Reveal
     function loadLeaderboard() {
       db.ref('users').orderByChild('xp').limitToLast(10).on('value', snap => {
         const board = document.getElementById('leaderboard'); board.innerHTML = '';
-        let rank = 1;
-        const users = [];
-        snap.forEach(child => { users.unshift(child.val()); }); // Reverse for Descending
+        let rank = 1; const users = [];
+        snap.forEach(child => { 
+          const u = child.val(); u.key = child.key;
+          users.unshift(u); 
+        });
         
         users.forEach(u => {
           board.innerHTML += `
             <div class="leaderboard-item">
               <div style="display:flex; align-items:center; gap:10px;">
-                <div style="font-weight:900; color:var(--accent-violet);">#${rank}</div>
-                <div class="avatar-sm" style="background-image:url(${u.avatar}); width:30px; height:30px;"></div>
-                <div>${u.name}</div>
+                <div style="font-weight:900; color:${rank===1 ? 'var(--gold-glow)' : 'var(--accent-violet)'}; font-size:1.1rem;">#${rank}</div>
+                <div class="avatar-sm" style="background-image:url(${u.avatar}); width:34px; height:34px;"></div>
+                <div>${u.name} ${rank===1 ? '👑' : ''}</div>
               </div>
-              <div style="color:var(--accent-cyan); font-weight:bold;">${u.xp} 🪙</div>
+              <div style="color:var(--accent-cyan); font-weight:bold;">${u.xp || 0} 🪙</div>
             </div>
           `;
           rank++;
@@ -608,18 +781,75 @@
       });
     }
 
+    // Auto-check Friday for points reset & giving draw attempt to #1
+    function checkFridayReset() {
+      const today = new Date();
+      const isFriday = today.getDay() === 5; // 5 is Friday
+      
+      db.ref('system/lastResetWeek').once('value', snap => {
+        const currentWeek = `${today.getFullYear()}-W${Math.ceil(today.getDate() / 7)}`;
+        if(isFriday && snap.val() !== currentWeek) {
+          // Perform Friday Reset
+          db.ref('users').orderByChild('xp').limitToLast(1).once('value', topSnap => {
+            topSnap.forEach(child => {
+              // Give top 1 user a draw attempt
+              db.ref(`users/${child.key}/drawAttempts`).transaction(c => (c || 0) + 1);
+            });
+
+            // Reset everyone's XP for the new week
+            db.ref('users').once('value', uSnap => {
+              uSnap.forEach(u => { db.ref(`users/${u.key}/xp`).set(0); });
+            });
+
+            db.ref('system/lastResetWeek').set(currentWeek);
+            showToast('تم بدء أسبوع جديد وتصفير النقاط وإضافة فرصة السحب للأول!');
+          });
+        }
+      });
+    }
+
+    // Progressive Typing Prize Reveal Algorithm
+    function openDrawModal() { document.getElementById('draw-modal').style.display = 'flex'; }
+
+    function startPrizeReveal() {
+      if(!uData.drawAttempts || uData.drawAttempts <= 0) return showToast('ليس لديك فرصة سحب متاحة!');
+
+      const btn = document.getElementById('spin-btn');
+      btn.disabled = true; btn.style.opacity = '0.5';
+
+      const prizes = [
+        "🎉 مبروك! حصلت على 500 نقطة Vibe ذهبية!",
+        "🎁 مبروك! كسبت كارت شحن بقيمة 50 جنيه!",
+        "💎 مبروك! حصلت على شارة التميز الذهبية + 200 نقطة!",
+        "🚀 مبروك! كسبت 1000 نقطة Vibe لحسابك!"
+      ];
+      const selectedPrize = prizes[Math.floor(Math.random() * prizes.length)];
+      
+      const target = document.getElementById('prize-typewriter');
+      target.innerText = "";
+      let idx = 0;
+
+      // Text typewriter effect
+      const interval = setInterval(() => {
+        if(idx < selectedPrize.length) {
+          target.innerText += selectedPrize.charAt(idx);
+          idx++;
+        } else {
+          clearInterval(interval);
+          // Deduct 1 attempt from user
+          db.ref(`users/${uid}/drawAttempts`).transaction(c => Math.max(0, (c || 1) - 1));
+          db.ref(`users/${uid}/xp`).transaction(c => (c || 0) + 300); // Grant prize XP
+          btn.disabled = false; btn.style.opacity = '1';
+        }
+      }, 70);
+    }
+
     function withdrawToWhatsApp() {
       if(uData.xp < 100) return showToast('تحتاج 100 نقطة كحد أدنى للسحب!');
-      
       const email = auth.currentUser.email;
       const message = `أهلاً يا أدمن، بطلب سحب أرباحي من Vibe Unite! 🚀%0A%0A👤 الاسم: ${uData.name}%0A🔗 اليوزرنيم: @${uData.username}%0A📧 الإيميل: ${email}%0A🪙 النقاط الحالية: ${uData.xp}`;
-      
-      // رقم الواتساب اللي انت طلبته
       const phone = "201505122028";
       window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
-      
-      // اختياري: لو حابب تصفر نقاطه بعد ما يطلب سحب
-      // db.ref(`users/${uid}/xp`).set(0); 
     }
   </script>
 </body>
