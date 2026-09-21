@@ -9,7 +9,8 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="manifest" href="data:application/manifest+json,{%22name%22:%22VIBE%20Unite%22,%22short_name%22:%22VIBE%22,%22start_url%22:%22/%22,%22display%22:%22standalone%22,%22background_color%22:%22%2307080b%22,%22theme_color%22:%22%2300F0FF%22}">
-  
+  <link rel="manifest" href="./manifest.json">
+
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
   
   <!-- Firebase SDK -->
@@ -851,6 +852,14 @@
       const phone = "201505122028";
       window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
     }
+    if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+      .then((reg) => console.log('Service Worker Registered successfully!', reg))
+      .catch((err) => console.log('Service Worker Registration failed:', err));
+  });
+}
+
   </script>
 </body>
 </html>
