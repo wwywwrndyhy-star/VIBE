@@ -1,7 +1,7 @@
 const CACHE_NAME = 'vibe-unite-v1';
 const ASSETS_TO_CACHE = [
   '/',
-  '/index.html',
+  '/VIBE.html',
   'https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap'
 ];
 
